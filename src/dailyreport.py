@@ -5,19 +5,19 @@ import os
 
 laporan_pengeboran ={
     'UG0001' : {'Mesin':'CS1000',
-                'Lokasi':'Under Ground', 
+                'Lokasi':'Underground', 
                 'Kemajuan': 30.5, 
                 'Status':'STOP',
                 'Kedalaman Akhir':30.5
                 },
     'UG0002' : {'Mesin':'CS1000',
-                'Lokasi':'Under Ground', 
+                'Lokasi':'Underground', 
                 'Kemajuan': 12, 
                 'Status':'RUNNING',
                 'Kedalaman Akhir':0
                 },
     'SF0001' : {'Mesin':'CS2000',
-                'Lokasi':'Surface', 
+                'Lokasi':'Surface',
                 'Kemajuan': 15, 
                 'Status':'RUNNING',
                 'Kedalaman Akhir':0
