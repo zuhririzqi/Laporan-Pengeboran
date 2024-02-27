@@ -416,7 +416,7 @@ def create (table):
     create_choice(table)
     
   
-#3. Fungsi untuk merubah data yang telah tersedia
+#3. Pilihan untuk merubah data yang telah tersedia
 def update_choice(table):
     """Fungsi untuk memilih data yang akan diperbaharui
 
@@ -448,6 +448,7 @@ def update_choice(table):
             print ('Pilihan anda tidak tersedia masukan (1-3): ')
             continue
 
+#3.1 Fungsi untuk merubah data keseluruhan
 def update_all (table):
     """Fungsi untuk memilih data yang akan 
     diperbaharui secara keseluruhan
@@ -500,7 +501,7 @@ def update_all (table):
         show(table)
         continue
 
-
+#3.2 Fungsi untuk merubah data sebagian
 def update_pars (table):
     """Fungsi untuk memilih data yang akan 
     diperbaharui berdasarkan key yang dipilih
@@ -583,7 +584,6 @@ def update_pars (table):
             continue
         return table
     
-
 #4. Fungsi menghapus item pada tabel
 def delete_choice (table):
     """Fungsi untuk memilih data yang akan 
@@ -615,20 +615,26 @@ def delete (table):
     """Fungsi untuk menghapus data dari database
         
     """
-    show (table)
     while True:
-        #Meminta input bhid yang ingin dihapus
-        bhid = valid_bhid('bhid')
-        #Jika bhid tersedia dalam database
-        if bhid in table.keys():
-            del table[bhid]
+        if len(table)>0:
             show (table)
-            break
-        #Jika bhid tidak tersedia dalam database
+            while True:
+                #Meminta input bhid yang ingin dihapus
+                bhid = valid_bhid('bhid')
+                #Jika bhid tersedia dalam database
+                if bhid in table.keys():
+                    del table[bhid]
+                    show (table)
+                    break
+                #Jika bhid tidak tersedia dalam database
+                else:
+                    print ('BHID tidak ditemukan')
+                    continue
+            return table
         else:
-            print ('BHID tidak ditemukan')
-            continue
-    return table
+            print ('Database kosong!, kembali ke Menu Utama')
+            import dailyreport
+            dailyreport.main()
     
       
 
