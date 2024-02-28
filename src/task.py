@@ -64,11 +64,11 @@ def valid_float (task):
             # Meminta input angka
             nums = float (input (task))
             # Jika input bernilai negatif
-            if nums < 0:
+            if nums > 0 and abs(nums)>0:
+                break
+            else:
                 print ('Angka tidak boleh negatif')
                 continue
-            else:
-                break
         # Jika input bukan angka
         except:
             print ('Hanya masukkan angka')
@@ -158,11 +158,11 @@ def valid_int (task):
             #Meminta inputan berupa angka
             nums = int (input (task))
             #Jika angka negatif
-            if nums < 0:
+            if nums > 0 and abs(nums)>0:
+                break
+            else:
                 print ('Angka tidak boleh negatif')
                 continue
-            else:
-                break
         except:
             #Jika inputan bukan berupa angka
             print ('Hanya masukkan angka')
@@ -209,12 +209,13 @@ def show_choice (table):
         choose (int): input pilihan penyajian data
     """
     while True:
-        print(
-        ''' Pilih data yang ingin anda tampilkan:
-        1. Laporan Pengeboran Keseluruhan
-        2. Laporan Pengeboran Sebagian
-        3. Menu Utama 
-        '''  )
+        print(''' 
+Pilih data yang ingin anda tampilkan:
+1. Laporan Pengeboran Keseluruhan
+2. Laporan Pengeboran Sebagian
+3. Menu Utama 
+---------------------------------------
+    '''  )
         #Meminta input pilihan
         choose = valid_int('Masukkan pilihan anda: ')
         #Jika ingin melihat keseluruhan data (1.1)
@@ -242,23 +243,20 @@ def show_all (table):
             show(table)
             break
         else:
-            print ('Database kosong, ingin kembali ke Menu Utama?')
+            print ('Database kosong, ingin menambahkan data?')
             while True:
-                #Konfirmasi apakah ingin berpindah pada menu utama
+                #Konfirmasi apakah ingin berpindah ke menu menambahkan data
                 comfirm = valid_alpha ('Iya/Tidak: ').capitalize()
-                #Jika ingin melihat menu utama
+                #Jika ingin menambah data
                 if comfirm == 'Iya':
-                    main_menu()
-                #Jika tetap ingin pada menu lihat
+                    create_choice(table)
+                #Jika tetap ingin kembali ke menu utama
                 elif comfirm == 'Tidak':
-                    delete_choice(table)
+                    show_choice(table)
                 else:
                     print ('Pilihan tidak tersedia, hanya masukkan Iya/Tidak')
                     continue 
 
-
-        
-    
 #1.2 Menampilkan tabel sesuai dengan kondisi yang dipilih
 def show_filtered(table):
     ''' Menampilkan nilai yang telah difilter berdasarkan kondisi tertentu
@@ -268,19 +266,21 @@ def show_filtered(table):
         filtered_table (dictionary) = database yang sudah terfilter
     '''
     while True:
-        print (''' Data yang ingin di tampilkan:
-            1. BHID
-            2. Mesin
-            3. Lokasi
-            4. Status
-            5. Kembali ke menu tampilkan
+        print (''' 
+Data yang ingin di tampilkan:
+1. BHID
+2. Mesin
+3. Lokasi
+4. Status
+5. Kembali ke menu tampilkan
+-----------------------------
         ''')
         
         #Meminta inputan kondisi untuk filtering
         input_case = valid_int('Masukkan pilihan anda: ')
         # Jika memilih berdasarkan BHID
         if input_case == 1:
-            show(table)
+            show_all(table)
             while True:
                 #Meminta input BHID yang ingin ditampilkan
                 input_bhid = valid_bhid('bhid')
@@ -295,7 +295,7 @@ def show_filtered(table):
                 continue
         #Jika memilih berdasarkan nama mesin
         elif input_case == 2:
-            show(table)
+            show_all(table)
             while True:
                 #Meminta input nama mesin
                 input_mesin = valid_alnum ('Masukkan nama mesin: ')
@@ -310,7 +310,7 @@ def show_filtered(table):
                 continue
         #Jika memilih berdasarkan lokasi pengeboran
         elif input_case == 3:
-            show(table)
+            show_all(table)
             while True:
                 #Meminta input berupa lokasi yang dicari
                 input_lokasi = valid_alpha('Input Lokasi yang ingin dicari: ')
@@ -324,7 +324,7 @@ def show_filtered(table):
                     print ('Lokasi yang anda cari tidak tersedia')
                 continue
         elif input_case == 4:
-            show(table)
+            show_all(table)
             while True:
                 #Meminta input berupa status yang dicari
                 input_status = valid_status('status')
@@ -356,9 +356,11 @@ def create_choice (table):
         choose (int): input pilihan penambahan data
     """
     while True:
-        print(''' Apakah anda ingin menambahkan data baru?
-            1. Tambah data baru
-            2. Kembali ke menu utama
+        print(''' 
+Apakah anda ingin menambahkan data baru?
+1. Tambah data baru
+2. Kembali ke menu utama
+----------------------------------------
             '''  )
         #Input pilihan penambahan data
         choose = valid_int('Masukkan pilihan anda: ')
@@ -379,13 +381,13 @@ def create (table):
 
     """
     while True:
-        show(table)
+        show (table)
         print ('Masukkan data yang ingin ditambahan!: ')
         # Meminta inputan bhid
         bhid = valid_bhid('bhid')
         # Jika bhid sudah ada dalam database
         if bhid in table.keys():
-            print ('bhid sudah ada, ingin ke update?')
+            print ('BHID sudah ada, ingin ke update?')
             while True:
                 comfirm = valid_alpha ('Iya/Tidak: ').capitalize()
                 #Jika ingin merubah data yang sudah ada
@@ -410,17 +412,29 @@ def create (table):
                 kedalaman_akhir= kemajuan
             else:
                 kedalaman_akhir
-            # Menambahkan data baru pada database
-            table.update({bhid:{
-                'Mesin':mesin,
-                'Lokasi':lokasi,
-                'Kemajuan': kemajuan,
-                'Status':status,
-                'Kedalaman Akhir':kedalaman_akhir
-            }})
-            table= dict(table)
-        show(table)
-        break
+            print ('Apakah anda ingin menyimpan data baru? ')
+            #Konfirmasi apakah ingin menyimpan update
+            comfirm = valid_alpha ('Iya/Tidak: ').capitalize()
+            #Jika ingin menambah data
+            if comfirm == 'Iya':
+                table.update({bhid:{
+                    'Mesin':mesin,
+                    'Lokasi':lokasi,
+                    'Kemajuan': kemajuan,
+                    'Status':status,
+                    'Kedalaman Akhir':kedalaman_akhir
+                }})
+                table= dict(table)
+                print('Data berhasil ditambahkan!')
+                show(table)
+                create_choice(table)
+            #Jika tetap ingin kembali ke menu create
+            elif comfirm == 'Tidak':
+                create_choice(table)
+            else:
+                print ('Pilihan tidak tersedia, hanya masukkan Iya/Tidak')
+                continue 
+           
   
 #3. Pilihan untuk merubah data yang telah tersedia
 def update_choice(table):
@@ -460,108 +474,47 @@ def update_all (table):
 
     """
     while True:
-        show (table)
-        #Meminta inputan bhid
-        bhid = valid_bhid ('bhid')
-        #Jika bhid ada dalam database
-        if bhid in table.keys():
-            # Meminta inputan data update
-            mesin = valid_alnum ('Masukkan nama mesin: ')
-            lokasi = valid_alpha ('Masukkan lokasi: ')
-            kemajuan = valid_float('Masukkan Kemajuan: ')
-            status = valid_status ('Masukkan Status: ')
-            kedalaman_akhir = 0
-
-            if status =='STOP':
-                kedalaman_akhir= kemajuan
-            else:
-                kedalaman_akhir
-            
-            table.update({bhid:{
-                'Mesin':mesin,
-                'Lokasi':lokasi,
-                'Kemajuan': kemajuan,
-                'Status':status,
-                'Kedalaman Akhir':kedalaman_akhir
-            }})
-            table= dict(table)
-            show(table)
-            break
-        #Jika bhid tidak tersedia dalam database
-        else:
-            print ('''BHID tidak ada, apakah ingin menambah data?''')
+        if len(table)>0:
             while True:
-                #Konfirmasi apakah ingin berpindah pada menu penambahan data
-                comfirm = valid_alpha ('Iya/Tidak: ').capitalize()
-                #Jika ingin menambah data baru
-                if comfirm == 'Iya':
-                    create_choice(table)
-                #Jika tetap ingin pada menu ubah data
-                elif comfirm == 'Tidak':
-                    update_all(table)
-                else:
-                    print ('Pilihan tidak tersedia, hanya masukkan Iya/Tidak')
-                    continue
-            
-
-#3.2 Fungsi untuk merubah data sebagian
-def update_pars (table):
-    """Fungsi untuk memilih data yang akan 
-    diperbaharui berdasarkan key yang dipilih
-        
-    """
-    while True:
-        show(table)
-        print (''' Data yang ingin di ubah:
-            1. Mesin
-            2. Lokasi
-            3. Kemajuan
-            4. Status
-            5. Kembali ke menu update
-        ''')
-        #Meminta input key yang akan diubah
-        input_case = valid_int('Masukkan pilihan anda: ')
-        if input_case in range(1,5):
-            while True:
-                #Meminta input BHID
+                show_all (table)
+                #Meminta inputan bhid
                 bhid = valid_bhid ('bhid')
                 #Jika bhid ada dalam database
                 if bhid in table.keys():
-                    #Jika ingin mengubah mesin
-                    if input_case == 1:
-                        mesin = valid_alnum('Input nama mesin: ')
-                        table[bhid]['Mesin']= mesin
-                    #Jika ingin mengubah lokasi
-                    elif input_case == 2:
-                        lokasi = valid_alpha('Input nama lokasi: ')
-                        table[bhid]['Lokasi']= lokasi
-                    #Jika ingin mengubah Kemajuan
-                    elif input_case == 3:
-                        x = table[bhid]['Status']
-                        if x == 'STOP':
-                            kemajuan = valid_float('Masukkan kemajuan: ')
-                            table[bhid]['Kemajuan']= kemajuan
-                            table[bhid]['Kedalaman Akhir']= kemajuan
-                        else:
-                            kemajuan = valid_float('Masukkan kemajuan: ')
-                            table[bhid]['Kemajuan']= kemajuan
-                            table[bhid]['Kedalaman Akhir']= 0
-                    #Jika ingin mengubah status
-                    elif input_case == 4:
-                        kemajuan = valid_float('Masukkan kemajuan: ')
-                        status = valid_status('status')
-                        kedalaman_akhir = 0
-                        table[bhid]['Kemajuan']= kemajuan
-                        table[bhid]['Status']= status
-                        if status =='STOP':
-                            kedalaman_akhir = kemajuan
-                        else:
-                            kedalaman_akhir
-                        table[bhid]['Kedalaman Akhir']=kedalaman_akhir
-                    table= dict(table)
-                    show(table)
-                    break
-                #Jika BHID tidak ada dalam database
+                    # Meminta inputan data update
+                    mesin = valid_alnum ('Masukkan nama mesin: ')
+                    lokasi = valid_alpha ('Masukkan lokasi: ')
+                    kemajuan = valid_float('Masukkan Kemajuan: ')
+                    status = valid_status ('Masukkan Status: ')
+                    kedalaman_akhir = 0
+
+                    if status =='STOP':
+                        kedalaman_akhir= kemajuan
+                    else:
+                        kedalaman_akhir
+                    #Konfirmasi apakah ingin berpindah kenu menambahkan data
+                    print ('Apakah anda ingin menyimpan perubahan data? ')
+                    comfirm = valid_alpha ('Iya/Tidak: ').capitalize()
+                    #Jika ingin menambah data
+                    if comfirm == 'Iya':
+                        table.update({bhid:{
+                            'Mesin':mesin,
+                            'Lokasi':lokasi,
+                            'Kemajuan': kemajuan,
+                            'Status':status,
+                            'Kedalaman Akhir':kedalaman_akhir
+                        }})
+                        table= dict(table)
+                        print ('Data berhasil diperbaharui!')
+                        show(table)
+                        update_choice(table)
+                    #Jika tetap ingin kembali ke menu update
+                    elif comfirm == 'Tidak':
+                        update_choice(table)
+                    else:
+                        print ('Pilihan tidak tersedia, hanya masukkan Iya/Tidak')
+                        continue 
+                #Jika bhid tidak tersedia dalam database
                 else:
                     print ('''BHID tidak ada, apakah ingin menambah data?''')
                     while True:
@@ -572,18 +525,184 @@ def update_pars (table):
                             create_choice(table)
                         #Jika tetap ingin pada menu ubah data
                         elif comfirm == 'Tidak':
-                            update_pars(table)
+                            update_all(table)
                         else:
                             print ('Pilihan tidak tersedia, hanya masukkan Iya/Tidak')
                             continue
-            return table
-        # Jika ingin kembali ke menu ubah data         
-        elif input_case == 5:
-            update_choice(table)
-        # Jika pilihan tidak tersedia
+        #Jika database kosong
         else:
-            print ('pilihan anda tidak tersedia')
-            continue
+            print ('Database kosong, ingin menambahkan data?')
+            while True:
+                #Konfirmasi apakah ingin berpindah ke menu menambahkan data
+                comfirm = valid_alpha ('Iya/Tidak: ').capitalize()
+                #Jika ingin menambah data
+                if comfirm == 'Iya':
+                    create_choice(table)
+                    break
+                #Jika tetap ingin kembali ke menu update
+                elif comfirm == 'Tidak':
+                    update_choice(table)
+                    break
+                else:
+                    print ('Pilihan tidak tersedia, hanya masukkan Iya/Tidak')
+                    continue 
+
+
+#3.2 Fungsi untuk merubah data sebagian
+def update_pars (table):
+    """Fungsi untuk memilih data yang akan 
+    diperbaharui berdasarkan key yang dipilih
+        
+    """
+    while True:
+        if len(table)>0:
+            while True:
+                show (table)
+                print (''' 
+Data yang ingin di ubah:
+1. Mesin
+2. Lokasi
+3. Kemajuan
+4. Status
+5. Kembali ke menu update
+--------------------------
+                ''')
+                #Meminta input key yang akan diubah
+                input_case = valid_int('Masukkan pilihan anda: ')
+                if input_case in range(1,5):
+                    while True:
+                        #Meminta input BHID
+                        bhid = valid_bhid ('bhid')
+                        #Jika bhid ada dalam database
+                        if bhid in table.keys():
+                            #Jika ingin mengubah mesin
+                            if input_case == 1:
+                                mesin = valid_alnum('Input nama mesin: ')
+                                while True:
+                                    confirm = valid_alpha('Apakah anda ingin menyimpan data? (Iya/Tidak)').capitalize()
+                                    if confirm == 'Iya':
+                                        table[bhid]['Mesin']= mesin
+                                        print ('Data sudah berhasil diperbaharui!')
+                                        show (table)
+                                        update_choice(table)
+                                    elif confirm == 'Tidak':
+                                        print('Data tidak diperbaharui')
+                                        update_choice(table)
+                                    else:
+                                        print('Hanya masukkan Iya/Tidak!')
+                                        continue
+                            #Jika ingin mengubah lokasi
+                            elif input_case == 2:
+                                lokasi = valid_alpha('Input nama lokasi: ')
+                                while True:
+                                    confirm = valid_alpha('Apakah anda ingin menyimpan data? (Iya/Tidak)').capitalize()
+                                    if confirm == 'Iya':
+                                        table[bhid]['Lokasi']= lokasi
+                                        print ('Data sudah berhasil diperbaharui!')
+                                        show (table)
+                                        update_choice(table)
+                                    elif confirm == 'Tidak':
+                                        print('Data tidak diperbaharui')
+                                        update_choice(table)
+                                    else:
+                                        print('Hanya masukkan Iya/Tidak!')
+                                        continue
+                            #Jika ingin mengubah Kemajuan
+                            elif input_case == 3:
+                                x = table[bhid]['Status']
+                                if x == 'STOP':
+                                    kemajuan = valid_float('Masukkan kemajuan: ')
+                                    while True:
+                                        confirm = valid_alpha('Apakah anda ingin menyimpan data? (Iya/Tidak)').capitalize()
+                                        if confirm == 'Iya':
+                                            table[bhid]['Kemajuan']= kemajuan
+                                            table[bhid]['Kedalaman Akhir']= kemajuan
+                                            print ('Data sudah berhasil diperbaharui!')
+                                            show (table)
+                                            update_choice(table)
+                                        elif confirm == 'Tidak':
+                                            print('Data tidak diperbaharui')
+                                            update_choice(table)
+                                        else:
+                                            print('Hanya masukkan Iya/Tidak!')
+                                            continue  
+                                else:
+                                    kemajuan = valid_float('Masukkan kemajuan: ')
+                                    while True:
+                                        confirm = valid_alpha('Apakah anda ingin menyimpan data? (Iya/Tidak)').capitalize()
+                                        if confirm == 'Iya':
+                                            table[bhid]['Kemajuan']= kemajuan
+                                            table[bhid]['Kedalaman Akhir']= 0
+                                            print ('Data sudah berhasil diperbaharui!')
+                                            show (table)
+                                            update_choice(table)
+                                        elif confirm == 'Tidak':
+                                            print('Data tidak diperbaharui')
+                                            update_choice(table)
+                                        else:
+                                            print('Hanya masukkan Iya/Tidak!')
+                                            continue  
+                            #Jika ingin mengubah status
+                            elif input_case == 4:
+                                kemajuan = valid_float('Masukkan kemajuan: ')
+                                status = valid_status('status')
+                                kedalaman_akhir = 0
+                                while True:
+                                    confirm = valid_alpha('Apakah anda ingin menyimpan data? (Iya/Tidak)').capitalize()
+                                    if confirm == 'Iya':
+                                        table[bhid]['Kemajuan']= kemajuan
+                                        table[bhid]['Status']= status
+                                        if status =='STOP':
+                                            kedalaman_akhir = kemajuan
+                                        else:
+                                            kedalaman_akhir
+                                        table[bhid]['Kedalaman Akhir']=kedalaman_akhir
+                                    elif confirm == 'Tidak':
+                                            print('Data tidak diperbaharui')
+                                            update_choice(table)
+                                    else:
+                                        print('Hanya masukkan Iya/Tidak!')
+                                        continue  
+                        #Jika BHID tidak ada dalam database
+                        else:
+                            print ('''BHID tidak ada, apakah ingin menambah data?''')
+                            while True:
+                                #Konfirmasi apakah ingin berpindah pada menu penambahan data
+                                comfirm = valid_alpha ('Iya/Tidak: ').capitalize()
+                                #Jika ingin menambah data baru
+                                if comfirm == 'Iya':
+                                    create_choice(table)
+                                #Jika tetap ingin pada menu ubah data
+                                elif comfirm == 'Tidak':
+                                    update_pars(table)
+                                else:
+                                    print ('Pilihan tidak tersedia, hanya masukkan Iya/Tidak')
+                                    continue
+                    return table
+                # Jika ingin kembali ke menu ubah data         
+                elif input_case == 5:
+                    update_choice(table)
+                # Jika pilihan tidak tersedia
+                else:
+                    print ('pilihan anda tidak tersedia')
+                    continue
+        else:
+            print ('Database kosong, ingin kembali menambahkan data?')
+            while True:
+                #Konfirmasi apakah ingin berpindah kenu menambahkan data
+                comfirm = valid_alpha ('Iya/Tidak: ').capitalize()
+                #Jika ingin menambah data
+                if comfirm == 'Iya':
+                    create_choice(table)
+                    break
+                #Jika tetap ingin kembali ke menu update
+                elif comfirm == 'Tidak':
+                    update_choice(table)
+                    break
+                else:
+                    print ('Pilihan tidak tersedia, hanya masukkan Iya/Tidak')
+                    continue 
+
         
     
 #4. Fungsi menghapus item pada tabel
@@ -594,6 +713,7 @@ def delete_choice (table):
     choose (int): Input pilihan hapus data
         
     """
+    
     while True:
         print(''' Apakah anda ingin menghapus data?
             1. Hapus data
@@ -619,35 +739,49 @@ def delete (table):
         
     """
     while True:
-        show (table)
         if len(table)>0:
             while True:
-                #Meminta input bhid yang ingin dihapus
-                bhid = valid_bhid('bhid')
-                #Jika bhid tersedia dalam database
-                if bhid in table.keys():
-                    table.pop(bhid)
-                    show(table)
-                    break
-                #Jika bhid tidak tersedia dalam database
-                else:
-                    print ('BHID tidak ditemukan')
-                    continue
-            break
-        else:
-            print ('Database kosong, ingin kembali ke Menu Utama?')
-            while True:
-                #Konfirmasi apakah ingin berpindah pada menu utama
+                show (table)
+                print('Anda yakin inginmenghapus data?')
                 comfirm = valid_alpha ('Iya/Tidak: ').capitalize()
-                #Jika ingin menambah data baru
+                #Jika ingin menambah data
                 if comfirm == 'Iya':
-                    main_menu()
-                #Jika tetap ingin pada menu hapus data
+                    #Meminta input bhid yang ingin dihapus
+                    bhid = valid_bhid('bhid')
+                    #Jika bhid tersedia dalam database
+                    if bhid in table.keys():
+                        table.pop(bhid)
+                        show(table)
+                        break
+                    #Jika bhid tidak tersedia dalam database
+                    else:
+                        print ('BHID tidak ditemukan')
+                        continue
+                #Jika tetap ingin kembali ke menu update
                 elif comfirm == 'Tidak':
                     delete_choice(table)
+                    break
                 else:
                     print ('Pilihan tidak tersedia, hanya masukkan Iya/Tidak')
                     continue 
+            
+        else:
+            print ('Database kosong, ingin kembali menambahkan data?')
+            while True:
+                #Konfirmasi apakah ingin berpindah kenu menambahkan data
+                comfirm = valid_alpha ('Iya/Tidak: ').capitalize()
+                #Jika ingin menambah data
+                if comfirm == 'Iya':
+                    create_choice(table)
+                    break
+                #Jika tetap ingin kembali ke menu update
+                elif comfirm == 'Tidak':
+                    delete_choice(table)
+                    break
+                else:
+                    print ('Pilihan tidak tersedia, hanya masukkan Iya/Tidak')
+                    continue 
+      
                 
         
 laporan_pengeboran ={

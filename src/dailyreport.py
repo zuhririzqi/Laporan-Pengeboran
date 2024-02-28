@@ -18,16 +18,16 @@ def clear_screen():
 def main():
     global laporan_pengeboran
     clear_screen()
-    print (
-    '''Laporan Pengeboran Eksplorasi
-    Pilih menu yang ingin anda jalankan:
-    1. Menampilkan Data 
-    2. Menambah Data 
-    3. Mengubah Data
-    4. Menghapus Data
-    5. Keluar
-         '''
-    )
+    print ('''
+Laporan Pengeboran Eksplorasi
+Pilih menu yang ingin anda jalankan:
+1. Menampilkan Data 
+2. Menambah Data 
+3. Mengubah Data
+4. Menghapus Data
+5. Keluar
+------------------------------------
+    ''')
     while True:
         choice =task.valid_int('Masukkan pilihan anda: ')
         if choice == 1:
