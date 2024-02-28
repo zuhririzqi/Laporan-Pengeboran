@@ -27,7 +27,8 @@ The directory structure of IndoMarket project looks like this:
         ├── docs                    -- Detailed Presentation
         ├── requirements.txt        -- The requirements file for reproducing the analysis environment
         └── src                     -- Source code for this program
-          
+            ├── dailyreport.py      -- Main program
+            └── task.py             -- Function codes
 
 ## Contribute
 
