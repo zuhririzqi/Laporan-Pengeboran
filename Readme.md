@@ -33,4 +33,4 @@ The directory structure of IndoMarket project looks like this:
 ## Contribute
 
 If you want to give some contribution for Dilling Report App improvement, 
-please contact me or you can check out git@github.com:zuhririzqi/Laporan-Pengeboran.git
+please contact me or you can check out https://github.com/zuhririzqi/Laporan-Pengeboran.git
