@@ -1,6 +1,5 @@
 from tabulate import tabulate
-# import os
-# import sys
+
 ## Fungsi untuk validasi input
 #1 Validasi input key BHID
 def valid_bhid (bhid):
@@ -135,7 +134,6 @@ def find_value (table, value):
     for k, v in table.items():
         #Jika value masih berupa dictionary
         if isinstance(v, dict):
-            #Pengulangan iterasi
             if find_value(v, value):
                 return True
         #Jika value bukan dictionary
