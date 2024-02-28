@@ -6,7 +6,7 @@ from task import laporan_pengeboran
 
 def clear_screen():
     """
-    A function to clean the user interface
+    Fungsi untuk membersihkan tampilan user
     """
     # For Windows
     if os.name == 'nt':
@@ -16,9 +16,14 @@ def clear_screen():
         _ = os.system('clear')
 
 def main():
+    """
+    Fungsi untuk menjalankan menu utama
+
+    """
     global laporan_pengeboran
     clear_screen()
     print ('''
+------------------------------------
 Laporan Pengeboran Eksplorasi
 Pilih menu yang ingin anda jalankan:
 1. Menampilkan Data 
