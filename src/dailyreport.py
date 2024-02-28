@@ -1,28 +1,8 @@
 from tabulate import tabulate
 import task
-import sys
 import os
-
-laporan_pengeboran ={
-    'UG0001' : {'Mesin':'CS1000',
-                'Lokasi':'Underground', 
-                'Kemajuan': 30.5, 
-                'Status':'STOP',
-                'Kedalaman Akhir':30.5
-                },
-    'UG0002' : {'Mesin':'CS1000',
-                'Lokasi':'Underground', 
-                'Kemajuan': 12, 
-                'Status':'RUNNING',
-                'Kedalaman Akhir':0
-                },
-    'SF0001' : {'Mesin':'CS2000',
-                'Lokasi':'Surface',
-                'Kemajuan': 15, 
-                'Status':'RUNNING',
-                'Kedalaman Akhir':0
-                }
-}
+import sys
+from task import laporan_pengeboran
 
 def clear_screen():
     """
@@ -35,12 +15,9 @@ def clear_screen():
     else:
         _ = os.system('clear')
 
-
 def main():
     global laporan_pengeboran
-    
     clear_screen()
-    
     print (
     '''Laporan Pengeboran Eksplorasi
     Pilih menu yang ingin anda jalankan:
@@ -69,4 +46,4 @@ def main():
        
         
 
-main ()
+main()

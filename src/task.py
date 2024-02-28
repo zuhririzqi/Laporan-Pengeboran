@@ -1,4 +1,6 @@
 from tabulate import tabulate
+# import os
+# import sys
 ## Fungsi untuk validasi input
 #1 Validasi input key BHID
 def valid_bhid (bhid):
@@ -13,14 +15,10 @@ def valid_bhid (bhid):
     """
     while True:
         import re
-        #Menentukan format penulisan BHID 
-        pattern = re.compile (r'[A-Za-z]{2}\d{4}')
         #Meminta penginputan BHID
         bhid = input('Input BHID: ').upper()
-        #Memeriksa kecocokan antar input dengan pattern
-        match = re.match (pattern,bhid)
-
-        if match:
+       
+        if re.match ((r'[A-Za-z]{2}\d{4}'),bhid) and len(bhid) == 6:
             break
         else:
             print('masukkan kombinasi 2 huruf dilanjutkan 4 angka')
@@ -39,15 +37,10 @@ def valid_status (status):
         status yang telah sesuai dengan format
     """
     while True:
-        import re
-        #Menentukan format penulisan STATUS
-        pattern = re.compile (r'RUNNING|STOP')
         #Meminta penginputan STATUS
         status = input('Input Status: ').upper()
-        #Memeriksa kecocokan antar input dengan pattern
-        match = re.match (pattern,status)
 
-        if match:
+        if status == 'STOP' or status == 'RUNNING':
             status = status
             break
         else:
@@ -94,7 +87,7 @@ def valid_alnum (task):
     """
     while True:
         #Meminta input kata berupa huruf dan angka
-        word = input (task).upper()
+        word = input(task).upper()
         #Jika input kata berupa huruf dan angka
         if word.isalnum():
             break
@@ -107,7 +100,7 @@ def valid_alnum (task):
 
 #5 Validasi alpha
 def valid_alpha (task):
-    """Fungsi untuk memastikan penginputan berupa huruf dan spasi saja
+    """Fungsi untuk memastikan penginputan berupa huruf saja
         
     Parameters:
         word (string): hasil input berupa huruf dan spasi
@@ -117,7 +110,7 @@ def valid_alpha (task):
     """
     while True:
         #Meminta input kata berupa huruf 
-        word = input (task).title()
+        word = input(task).title()
         #Jika input kata berupa huruf 
         if word.isalpha():
             break
@@ -226,14 +219,13 @@ def show_choice (table):
         choose = valid_int('Masukkan pilihan anda: ')
         #Jika ingin melihat keseluruhan data (1.1)
         if choose == 1:
-            show_all (table)
+            show_all(table)
         #Jika ingin melihat data yang sudah terfilter (1.2)
         elif choose == 2:
             show_filtered(table)
         #Jika ingin kembali ke menu utama
         elif choose == 3:
-            import dailyreport
-            dailyreport.main()
+            main_menu()
         #Jika pilihan selain opsi yang tersedia
         else:
             print ('Pilihan anda tidak tersedia masukan (1-3): ')
@@ -244,13 +236,29 @@ def show_choice (table):
 def show_all (table):
     """Fungsi untuk menampilkan keseluruhan data pengeboran
     """
-    # Menampilkan seluruh data pada database
-    show (table)
-    #Kembali pada fungsi pilihan penyajian
-    show_choice (table)
+    while True:
+        if len(table)>0:
+            # Menampilkan seluruh data pada database
+            show(table)
+            break
+        else:
+            print ('Database kosong, ingin kembali ke Menu Utama?')
+            while True:
+                #Konfirmasi apakah ingin berpindah pada menu utama
+                comfirm = valid_alpha ('Iya/Tidak: ').capitalize()
+                #Jika ingin melihat menu utama
+                if comfirm == 'Iya':
+                    main_menu()
+                #Jika tetap ingin pada menu lihat
+                elif comfirm == 'Tidak':
+                    delete_choice(table)
+                else:
+                    print ('Pilihan tidak tersedia, hanya masukkan Iya/Tidak')
+                    continue 
+
+
+        
     
-
-
 #1.2 Menampilkan tabel sesuai dengan kondisi yang dipilih
 def show_filtered(table):
     ''' Menampilkan nilai yang telah difilter berdasarkan kondisi tertentu
@@ -359,12 +367,12 @@ def create_choice (table):
             create (table)
         #Jika ingin kembali ke menu utama
         elif choose == 2:
-            import dailyreport
-            dailyreport.main()
+            main_menu()
         #Jika pilihan tidak tersedia
         else:
             print ('Pilihan anda tidak tersedia masukan (1/2): ')
             continue
+
 #2.1 Penambahan data baru pada database
 def create (table):
     """Fungsi untuk melakukan penambahan data pada database
@@ -413,8 +421,6 @@ def create (table):
             table= dict(table)
         show(table)
         break
-    create_choice(table)
-    
   
 #3. Pilihan untuk merubah data yang telah tersedia
 def update_choice(table):
@@ -441,8 +447,7 @@ def update_choice(table):
             update_pars(table)
         #Jika ingin kembali ke menu utama
         elif choose == 3:
-            import dailyreport
-            dailyreport.main()
+            main_menu()
         #Jika pilihan tidak tersedia
         else:
             print ('Pilihan anda tidak tersedia masukan (1-3): ')
@@ -454,8 +459,8 @@ def update_all (table):
     diperbaharui secara keseluruhan
 
     """
-    show (table)
     while True:
+        show (table)
         #Meminta inputan bhid
         bhid = valid_bhid ('bhid')
         #Jika bhid ada dalam database
@@ -464,7 +469,7 @@ def update_all (table):
             mesin = valid_alnum ('Masukkan nama mesin: ')
             lokasi = valid_alpha ('Masukkan lokasi: ')
             kemajuan = valid_float('Masukkan Kemajuan: ')
-            status = valid_status ('MAsukkan Status: ')
+            status = valid_status ('Masukkan Status: ')
             kedalaman_akhir = 0
 
             if status =='STOP':
@@ -481,7 +486,7 @@ def update_all (table):
             }})
             table= dict(table)
             show(table)
-            update_choice(table)
+            break
         #Jika bhid tidak tersedia dalam database
         else:
             print ('''BHID tidak ada, apakah ingin menambah data?''')
@@ -498,8 +503,6 @@ def update_all (table):
                     print ('Pilihan tidak tersedia, hanya masukkan Iya/Tidak')
                     continue
             
-        show(table)
-        continue
 
 #3.2 Fungsi untuk merubah data sebagian
 def update_pars (table):
@@ -555,7 +558,6 @@ def update_pars (table):
                         else:
                             kedalaman_akhir
                         table[bhid]['Kedalaman Akhir']=kedalaman_akhir
-
                     table= dict(table)
                     show(table)
                     break
@@ -574,7 +576,7 @@ def update_pars (table):
                         else:
                             print ('Pilihan tidak tersedia, hanya masukkan Iya/Tidak')
                             continue
-                    
+            return table
         # Jika ingin kembali ke menu ubah data         
         elif input_case == 5:
             update_choice(table)
@@ -582,7 +584,7 @@ def update_pars (table):
         else:
             print ('pilihan anda tidak tersedia')
             continue
-        return table
+        
     
 #4. Fungsi menghapus item pada tabel
 def delete_choice (table):
@@ -604,41 +606,71 @@ def delete_choice (table):
             delete(table)
         # Jika ingin kembali ke menu utama
         elif choose == 2:
-            import dailyreport
-            dailyreport.main()
+            main_menu()
         #Jika pilihan tidak tersedia
         else:
             print ('Pilihan anda tidak tersedia masukan (1/2): ')
             continue
+
+
 
 def delete (table):
     """Fungsi untuk menghapus data dari database
         
     """
     while True:
+        show (table)
         if len(table)>0:
-            show (table)
             while True:
                 #Meminta input bhid yang ingin dihapus
                 bhid = valid_bhid('bhid')
                 #Jika bhid tersedia dalam database
                 if bhid in table.keys():
-                    del table[bhid]
-                    show (table)
+                    table.pop(bhid)
+                    show(table)
                     break
                 #Jika bhid tidak tersedia dalam database
                 else:
                     print ('BHID tidak ditemukan')
                     continue
-            return table
+            break
         else:
-            print ('Database kosong!, kembali ke Menu Utama')
-            import dailyreport
-            dailyreport.main()
-    
-      
-
-
-            
+            print ('Database kosong, ingin kembali ke Menu Utama?')
+            while True:
+                #Konfirmasi apakah ingin berpindah pada menu utama
+                comfirm = valid_alpha ('Iya/Tidak: ').capitalize()
+                #Jika ingin menambah data baru
+                if comfirm == 'Iya':
+                    main_menu()
+                #Jika tetap ingin pada menu hapus data
+                elif comfirm == 'Tidak':
+                    delete_choice(table)
+                else:
+                    print ('Pilihan tidak tersedia, hanya masukkan Iya/Tidak')
+                    continue 
+                
         
-    
+laporan_pengeboran ={
+'UG0001' : {'Mesin':'CS1000',
+            'Lokasi':'Underground', 
+            'Kemajuan': 30.5, 
+            'Status':'STOP',
+            'Kedalaman Akhir':30.5
+            },
+'UG0002' : {'Mesin':'CS1000',
+            'Lokasi':'Underground', 
+            'Kemajuan': 12, 
+            'Status':'RUNNING',
+            'Kedalaman Akhir':0
+            },
+'SF0001' : {'Mesin':'CS2000',
+            'Lokasi':'Surface',
+            'Kemajuan': 15, 
+            'Status':'RUNNING',
+            'Kedalaman Akhir':0
+            }
+}
+
+def main_menu():
+    import dailyreport
+    dailyreport.main()
