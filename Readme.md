@@ -20,7 +20,7 @@ To get this project, you can clone it by running the following code:
 
 ##  Project Organization
 
-The directory structure of IndoMarket project looks like this:
+The directory structure of this project looks like this:
 
         ├── Readme.md               -- The top-level README for developers using this project.
         ├── data                    -- Drilling Report Database
